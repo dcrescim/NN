@@ -54,6 +54,35 @@ class SigLayer(FunctionLayer):
   def __init__(self):
     super(SigLayer, self).__init__(mapping=Sig)
 
+
+class ReshapeLayer(PureObject):
+  def __init__(self, dim_in, dim_out):
+    self.dim_in = dim_in
+    self.dim_out = dim_out
+
+  def forward(self, X):
+    return X.reshape(self.dim_out)
+
+  def north_partial(self, partials):
+    return []
+
+  def west_partial(self, partials):
+    return partials.reshape(self.dim_in)
+
+  def get_params(self, deep=True):
+    return {'dim_in' : self.dim_in, 
+            'dim_out': self.dim_out}
+
+  def set_params(self, **params):
+    for parameter, value in params.items():
+      self.__setattr__(parameter, value)
+
+  def delta_iterator(self):
+    return []
+
+  def __repr__(self):
+    return "Reshape Layer. Dim in %s, Dim out %s" % (str(self.dim_in), str(self.dim_out))
+
 # Covers mean layer
 class MeanLayer(PureObject):
   def __init__(self, dim):

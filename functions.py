@@ -53,6 +53,14 @@ class AccuracyScore(PureObject):
     return 1 - float(count)/len(Y)
 
 
+class RegressScore(PureObject):
+
+  @staticmethod
+  def func(Y,T):
+    u = ((T - Y)**2).sum()
+    v = ((T-T.mean())**2).sum()
+    return 1 - u/v
+
 '''
   Matrix Functions
 '''

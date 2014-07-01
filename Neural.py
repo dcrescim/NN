@@ -149,6 +149,7 @@ class NN_Regressor(NNBase):
     super(NN_Regressor, self).__init__(layers=layers, lr=lr, epochs=epochs, noisy=noisy, verbose=verbose)
     self.type = 'R'
     self.error_func = SquaredError
+    self.score_func = RegressScore
 
   def predict(self, X):
     predictions = []
@@ -159,6 +160,7 @@ class NN_Regressor(NNBase):
     return predictions
 
   def fit(self, X, T):
+    #import ipdb; ipdb.set_trace()
     if not self.epochs:
       self.epochs = 1
 
@@ -174,7 +176,8 @@ class NN_Regressor(NNBase):
 
   def error(self, X, T):
     Y = self.predict(X)
-    return self.error_func.func(X, T)
+    #import ipdb; ipdb.set_trace()
+    return self.error_func.func(Y, T)
 
   def analytic_gradient(self,X,T):
     return NNBase._analytical_gradient(self, X, T)
